@@ -1,0 +1,101 @@
+{
+  "api": {
+    "titles": [
+      "Beautiful & luxurious studio at great location",
+      "Trendy Studio ( Oosterpark ) close to UVA",
+      "1 bedroom apartment of 50 m² in Amstelveen",
+      "1 bedroom apartment of 20 m² in Paris",
+      "2 bedroom house of 52 m² in Paris",
+      "Maritim Hotel Köln",
+      "1 room of 40 m² in Brussels",
+      "1 bedroom house of 4500 m² in Hamburg",
+      "2 bedroom apartment of 30 m² in Hamburg",
+      "1 bedroom apartment of 55 m² in Düsseldorf"
+    ],
+    "descriptions": [
+      "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century. An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.",
+      "A fashionable studio apartment with trendy decor, cool exposed-brick walls, a balcony, and smart home capabilities in Oosterpark 56, 1092 AP. The apartment is a 10 minutes from the University of Amsterdam ( 10 minutes by bike ), and nearby you'll find lots of restaurants, cafes, bars, and shops to enjoy.",
+      "The apartment building is located on the edge of Amstelveen. There is free parking in front of the building. Through the hallway you enter the living room. In the hallway you can access the bedroom with fitted wardrobes and the bathroom with bath, toilet, washbasin and washing machine connection. From the living room you have access to the open kitchen and on the other side the spacious balcony. City center of Amstelveen is approx.",
+      "paris xvi - chaillot in a haussmanian building, on the 6th floor, furnished apartment, bright living room with a view of the eiffel tower, sofa bed, fitted kitchen, sleeping area with double bed, shower room with wc, storage. better than a hotel room!",
+      "avenue bugeaud – metro victor hugo – in a beautiful freestone building, on the ground floor, apartment of 52 m2. entrance, living room overlooking the street, bedroom overlooking the courtyard, separate kitchen, bathroom with wc, cupboards. parquet moldings, high ceilings. individual electric heating. free right away. dpe in progress following insulation work.",
+      "Perfect location for a short stay, everything is in walking distance. Breakfast are very good. Friendly and helpful staff",
+      "Luxembourg - Schuman - BK presents this nice fully furnished small flat close to downtown & EU corner. 1st floor (no lift) with living, kitchen with washing-machine, small bedroom, bathroom & toilet. Double glazing, no lift,. All-in provision of 150€ including, common, water, heating, electricity & insurance.",
+      "Due to the given occasion and to protect you and our employees from the corona virus, we would like to point out that viewings of the apartment offered here can currently only be carried out in the individual viewing process. Only individuals or couples belonging to the same household can visit the premises one after the other.",
+      "Centrally situated small flat. nearness of the exhibition centre. to the railway station dam gate approx. 10 minutes. underground, bars, restaurants are before the door. small flat with two bedrooms. a double room with two separate beds, a single room with a bed 90 x 200. in every space a tv exists. a bath and a kitchen-living room. bedclothes and towels, as well as a dressing-gown are put. price: 2 persons = 90,- € every person = plus 8,50 € parking lot = 3,50 € per day (please on time announce) breakfast = 7,- € per person and day",
+      "From the hallway you reach the bright kitchen on the left with space for a dining table and a view of the Düsseldorf TV tower. If you like it, the existing fitted kitchen can be purchased by the tenant for a fee. Straight ahead is the pretty interior shower room and a storage room, which also houses the gas heater"
+    ],
+    "cities": [
+      "Paris",
+      "Cologne",
+      "Brussels",
+      "Amsterdam ",
+      "Hamburg",
+      "Dusseldorf"
+    ],
+    "previews": [
+      "apartment-01.jpg",
+      "apartment-01.jpg",
+      "apartment-02.jpg",
+      "apartment-03.jpg",
+      "room.jpg",
+      "studio-01.jpg"
+    ],
+    "photos": [
+      "apartment-01.jpg",
+      "apartment-02.jpg",
+      "apartment-03.jpg"
+    ],
+    "rentType": [
+      "apartment",
+      "house",
+      "room",
+      "hotel"
+    ],
+    "amenities": [
+      "Breakfast",
+      "Air",
+      "Conditioning",
+      "Laptop",
+      "friendly workspace",
+      "baby seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ],
+    "names": [
+      "John Born",
+      "Angelina Green",
+      "Ann Kraft",
+      "Tom Smith",
+      "Rendy March",
+      "Olaf Meier"
+    ],
+    "emails": [
+      "snow@pisem.local",
+      "president@dka.local",
+      "fish@big.local",
+      "test@pisem.local",
+      "freedom@pisem.local",
+      "rolan@pochta.local",
+      "author@mir.local",
+      "test@lost.loca",
+      "kujo-fan@story.local"
+    ],
+    "avatars": [
+      "user.jpg",
+      "photo.jpg",
+      "awesome-avatar.jpg",
+      "roland.jpg",
+      "smit.jpg",
+      "coffee.jpg"
+    ],
+    "locations": [
+      "48.85661 2.351499",
+      "50.938361 6.959974",
+      "50.846557 4.351697",
+      "52.370216 4.895168",
+      "53.550341 10.000654",
+      "51.225402 6.776314"
+    ]
+  }
+}

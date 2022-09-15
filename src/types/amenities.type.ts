@@ -1,3 +1,3 @@
-export type AmenitiesType = {
+export type Amenities = {
   amenity: string;
 }
