@@ -1,46 +1,36 @@
-import { readFileSync } from 'fs';
+import EventEmitter from 'events';
+import { createReadStream } from 'fs';
 
 import { FileReaderInterface } from './file-reader.interface.js';
-import { RentOffer } from '../../types/rent-offer.type.js';
-import { RentType } from '../../types/rent-type.enum.js';
-import { UserStatus } from '../../types/user-status.enum.js';
 
-export default class TSVFileReader implements FileReaderInterface {
-  private rawData = '';
-
-  constructor(public filename: string) { }
-
-  public read(): void {
-    this.rawData = readFileSync(this.filename, { encoding: 'utf8' });
+export default class TSVFileReader extends EventEmitter implements FileReaderInterface {
+  constructor(public filename: string) {
+    super();
   }
 
-  public toArray(): RentOffer[] {
-    if (!this.rawData) {
-      return [];
+  public async read(): Promise<void> {
+    const stream = createReadStream(this.filename, {
+      highWaterMark: 16384, // 16KB
+      encoding: 'utf-8',
+    });
+
+    let lineRead = '';
+    let endLinePosition = -1;
+    let importedRowCount = 0;
+
+    for await (const chunk of stream) {
+      lineRead += chunk.toString();
+
+      while ((endLinePosition = lineRead.indexOf('\n')) >= 0) {
+        const completeRow = lineRead.slice(0, endLinePosition + 1);
+        lineRead = lineRead.slice(++endLinePosition);
+        importedRowCount++;
+
+        this.emit('line', completeRow);
+      }
     }
 
-    return this.rawData
-      .split('\n')
-      .filter((row) => row.trim() !== '')
-      .map((line) => line.split('\t'))
-      .map(([title, description, createdDate, city, preview, photo, premium, rating, rentType, rooms, guests, rentPrice, amenities, name, email, avatar, password, status, commentNumber, cityLocation, latitude, longitude]) => ({
-        title,
-        description,
-        date: new Date(createdDate),
-        city,
-        preview,
-        photo,
-        premium: Boolean(premium),
-        rating: Number.parseInt(rating, 10),
-        rentType: RentType[rentType as 'apartment' | 'house' | 'room' | 'hotel'],
-        rooms: Number(rooms),
-        guests: Number(guests),
-        rentPrice: Number(rentPrice),
-        amenities: amenities.split(';')
-          .map((amenity) => ({ amenity })),
-        author: { name, email, avatar, password, status: UserStatus[status as 'Casual' | 'Pro'] },
-        commentNumber: Number(commentNumber),
-        location: { cityLocation, latitude: Number(latitude), longitude: Number(longitude) },
-      }));
+    this.emit('end', importedRowCount);
   }
+
 }
