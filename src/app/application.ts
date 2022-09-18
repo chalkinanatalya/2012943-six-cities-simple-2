@@ -1,14 +1,16 @@
+import { injectable } from 'inversify';
+import { inject } from 'inversify/lib/annotation/inject.js';
 import { ConfigInterface } from '../common/config/config.interface.js';
 import { LoggerInterface } from '../common/logger/logger.interface.js';
+import { Component } from '../types/component.type.js';
 
+@injectable()
 export default class Application {
-  private logger!: LoggerInterface;
-  private config!: ConfigInterface;
 
-  constructor(logger: LoggerInterface, config: ConfigInterface) {
-    this.logger = logger;
-    this.config = config;
-  }
+  constructor(
+    @inject(Component.LoggerInterface) private logger: LoggerInterface,
+    @inject(Component.ConfigInterface) private config: ConfigInterface
+  ) { }
 
   public async init() {
     this.logger.info('Initializing application...');
