@@ -1,6 +1,7 @@
 import { RentOffer } from '../types/rent-offer.type.js';
 import { RentType } from '../types/rent-type.enum.js';
 import { UserStatus } from '../types/user-status.enum.js';
+import crypto from 'crypto';
 
 export const createRentOffer = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
@@ -19,8 +20,7 @@ export const createRentOffer = (row: string) => {
     rooms: Number(rooms),
     guests: Number(guests),
     rentPrice: Number(rentPrice),
-    amenities: amenities.split(';')
-      .map((amenity) => ({ amenity })),
+    amenities: amenities.split(';'),
     author: { name, email, avatar, status: UserStatus[status as 'Casual' | 'Pro'] },
     commentNumber: Number(commentNumber),
     location: { latitude: latitude, longitude: longitude },
@@ -29,3 +29,8 @@ export const createRentOffer = (row: string) => {
 
 export const getErrorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : '';
+
+export const createSHA256 = (line: string, salt: string): string => {
+  const shaHaser = crypto.createHmac('sha256', salt);
+  return shaHaser.update(line).digest('hex');
+};

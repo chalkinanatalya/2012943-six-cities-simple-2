@@ -1,7 +1,6 @@
 export enum AmenitiesList {
   Breakfast = 'Breakfast',
-  Air = 'Air',
-  Conditioning = 'Conditioning',
+  AirConditioning = 'Air conditioning',
   Laptop = 'Laptop',
   FriendlyWorkspace = 'friendly workspace',
   BabySeat = 'baby seat',
