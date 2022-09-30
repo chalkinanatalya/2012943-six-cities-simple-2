@@ -1,4 +1,3 @@
-import { Amenities } from './amenities.type.js';
 import { Location } from './location.type.js';
 import { RentType } from './rent-type.enum.js';
 import { User } from './user.type.js';
@@ -16,7 +15,7 @@ export type RentOffer = {
   rooms: number,
   guests: number,
   rentPrice: number,
-  amenities: Amenities[],
+  amenities: string[],
   author: User,
   commentNumber: number,
   location: Location
