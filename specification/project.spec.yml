@@ -215,23 +215,91 @@ paths:
         - users
       summary: Авторизация пользователя
       description: Авторизует пользователя на основе логина и пароля
+      requestBody:
+        description: Информация для авторизации пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/auth"
+
+      responses:
+        "200":
+          description: Авторизация пройдена.
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/token"
+        "400":
+          description: Ошибка тела запроса.
 
     get:
       tags:
         - users
       summary: Проверка состояния пользователя
       description: Возвращает информацию по авторизованному пользователю
+      parameters:
+        - in: header
+          name: X-Token
+          schema:
+            type: string
+          example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+          required: true
 
-  /users/{userId}/avatar:
-    post:
-      tags:
-        - users
-      summary: Загрузить изображение аватара
-      description: Загружает изображение аватара пользователя. Изображение
-        аватара должно быть в формате `png` или `jpg`.
+      responses:
+        "200":
+          description: Статус авторизации пользователя.
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/userInfo"
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/authError"
 
 components:
   schemas:
+    token:
+      type: object
+
+      properties:
+        token:
+          type: string
+          example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+
+    authError:
+      type: object
+
+      properties:
+        error:
+          type: string
+          example: You are not logged in
+
+    userInfo:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: john@example.com
+
+        avatar:
+          type: string
+          example: avatar.png
+
+        name:
+          type: string
+          example: John
+
+        status:
+          type: UserStatus
+          example: Pro
+
     createUser:
       type: object
 
@@ -263,6 +331,18 @@ components:
         email:
           type: string
           example: example@test.com
+
+    auth:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: example@test.com
+
+        password:
+          type: string
+          example: 123456
 
     createOffer:
       type: object
@@ -569,5 +649,4 @@ components:
           example: 5
 
         user:
-          type: User
-          example: user
+          $ref: "#/components/schemas/user"
