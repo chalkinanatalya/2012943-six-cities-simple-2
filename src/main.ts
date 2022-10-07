@@ -15,6 +15,9 @@ import UserService from './modules/user/user.service.js';
 import { RentOfferServiceInterface } from './modules/rent-offer/rent-offer-service.interface.js';
 import RentOfferService from './modules/rent-offer/rent-offer.service.js';
 import { RentOfferEntity, RentOfferModel } from './modules/rent-offer/rent-offer.entity.js';
+import { CommentServiceInterface } from './modules/comment/comment-service.interface.js';
+import { CommentEntity, CommentModel } from './modules/comment/comment.entity.js';
+import CommentService from './modules/comment/comment.service.js';
 
 const applicationContainer = new Container();
 applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
@@ -25,6 +28,8 @@ applicationContainer.bind<UserServiceInterface>(Component.UserServiceInterface).
 applicationContainer.bind<types.ModelType<UserEntity>>(Component.UserModel).toConstantValue(UserModel);
 applicationContainer.bind<RentOfferServiceInterface>(Component.RentOfferServiceInterface).to(RentOfferService);
 applicationContainer.bind<types.ModelType<RentOfferEntity>>(Component.RentOfferModel).toConstantValue(RentOfferModel);
+applicationContainer.bind<CommentServiceInterface>(Component.CommentServiceInterface).to(CommentService).inSingletonScope();
+applicationContainer.bind<types.ModelType<CommentEntity>>(Component.CommentModel).toConstantValue(CommentModel);
 
 const application = applicationContainer.get<Application>(Component.Application);
 

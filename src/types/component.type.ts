@@ -6,5 +6,7 @@ export const Component = {
   UserServiceInterface: Symbol.for('UserServiceInterface'),
   UserModel: Symbol.for('UserModel'),
   RentOfferServiceInterface: Symbol.for('RentOfferServiceInterface'),
-  RentOfferModel: Symbol.for('RentOfferModel')
+  RentOfferModel: Symbol.for('RentOfferModel'),
+  CommentModel: Symbol.for('CommentModel'),
+  CommentServiceInterface: Symbol.for('CommentServiceInterface'),
 } as const;
