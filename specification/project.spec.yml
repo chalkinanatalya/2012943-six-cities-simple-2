@@ -1,0 +1,652 @@
+openapi: 3.1.0
+info:
+  title: API сервер для проекта «Шесть городов».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Шесть городов».
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+tags:
+  - name: offers
+    description: Действия с предложениями.
+  - name: comments
+    description: Действия с комментариями.
+  - name: users
+    description: Действия с пользователем.
+
+paths:
+  /offers/register:
+    post:
+      tags:
+        - offers
+      summary: Разместить предложение
+      description: Создание нового предложения.
+
+      requestBody:
+        description: Информация для размещения предложения.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createOffer"
+        required: true
+
+      responses:
+        "201":
+          description: Объявление размещено. Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/createOffer"
+
+        "409":
+          description: Ошибка данных регистрации.
+
+  /offers/update:
+    put:
+      tags:
+        - offers
+      summary: Редактировать предложение
+      description: Редактирование существующего предложения.
+
+      requestBody:
+        description: Информация для обновления предложения.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateOffer"
+        required: true
+
+      responses:
+        "201":
+          description: Предложение обновлено. Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/updateOffer"
+
+        "409":
+          description: Ошибка данных обновления.
+        "403":
+          description: Запрет обновления.
+
+  /offers/{offerId}/delete:
+    delete:
+      tags:
+        - offers
+      summary: Удалить предложение
+      description: Удаление существующего предложения.
+
+      requestBody:
+        description: Информация для удаления предложения.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/deleteOffer"
+        required: true
+
+      responses:
+        "204":
+          description: Предложение удалено. Объект предложения.
+
+        "403":
+          description: Запрет удаления.
+
+  /offers/list:
+    get:
+      tags:
+        - offers
+      summary: Получить список предложений по аренде.
+      description: Получение списка предложений по аренде.
+      parametres:
+        - name: listOffers
+          description: Информация для получения списка предложений
+          schema:
+            type: number
+            default: 60
+
+      responses:
+        "200":
+          description: Список получен. Массив объектов предложения.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/listOffers"
+
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Получить одно предложение по аренде.
+      description: Получение одного предложения по аренде.
+      parametres:
+        - name: offer
+          description: Информация для получения одного предложения
+
+      responses:
+        "200":
+          description: Одно предложение получено. Объект предложения.
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/offer"
+
+  /comments/{offerId}:
+    get:
+      tags:
+        - comments
+      summary: Получить список комментариев.
+      description: Получение списка комментария.
+      parametres:
+        - name: comment
+          description: Информация для получения списка комментариев
+
+      responses:
+        "200":
+          description: Список комментариев получен. Массив комментариев.
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/listComments"
+        "400":
+          description: Ошибка тела запроса.
+
+    post:
+      tags:
+        - comments
+      summary: Создать комментарий.
+      description: Создание нового комментария.
+
+      requestBody:
+        description: Информация комментария.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createComment"
+        required: true
+
+      responses:
+        "200":
+          description: Комментарий размещен. Объект комментария.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/createComment"
+
+        "400":
+          description: Ошибка тела запроса
+
+        "401":
+          description: Пользователь не авторизован.
+
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Регистрация пользователя
+      description: Регистрирует нового пользователя.
+
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createUser"
+        required: true
+
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+
+        "409":
+          description: Пользователь с таким email уже существует.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя
+      description: Авторизует пользователя на основе логина и пароля
+      requestBody:
+        description: Информация для авторизации пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/auth"
+
+      responses:
+        "200":
+          description: Авторизация пройдена.
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/token"
+        "400":
+          description: Ошибка тела запроса.
+
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя
+      description: Возвращает информацию по авторизованному пользователю
+      parameters:
+        - in: header
+          name: X-Token
+          schema:
+            type: string
+          example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+          required: true
+
+      responses:
+        "200":
+          description: Статус авторизации пользователя.
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/userInfo"
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/authError"
+
+components:
+  schemas:
+    token:
+      type: object
+
+      properties:
+        token:
+          type: string
+          example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+
+    authError:
+      type: object
+
+      properties:
+        error:
+          type: string
+          example: You are not logged in
+
+    userInfo:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: john@example.com
+
+        avatar:
+          type: string
+          example: avatar.png
+
+        name:
+          type: string
+          example: John
+
+        status:
+          type: UserStatus
+          example: Pro
+
+    createUser:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: john@example.com
+
+        name:
+          type: string
+          example: John
+
+        status:
+          type: UserStatus
+          example: Pro
+
+        password:
+          type: string
+          example: 123456
+
+    user:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: example@test.com
+
+    auth:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: example@test.com
+
+        password:
+          type: string
+          example: 123456
+
+    createOffer:
+      type: object
+
+      properties:
+        title:
+          type: string
+          example: 1 bedroom house of 4500 m² in Dusseldorf
+
+        description:
+          type: string
+          example: A fashionable studio apartment with trendy decor, cool exposed-brick walls, a balcony, and smart home capabilities in Oosterpark 56, 1092 AP. The apartment is a 10 minutes from the University of Amsterdam ( 10 minutes by bike ), and nearby you'll find lots of restaurants, cafes, bars, and shops to enjoy.
+
+        date:
+          type: Date
+          example: 2022-09-09T21:28:03.335Z
+
+        city:
+          type: string
+          example: Dusseldorf
+
+        preview:
+          type: string
+          example: room.jpg
+
+        photos:
+          type: string
+          example: apartment-02.jpg;apartment-03.jpg
+
+        premium:
+          type: boolean
+          example: true
+
+        rating:
+          type: number
+          example: 3
+
+        rentType:
+          type: RentType
+          example: hotel
+
+        rooms:
+          type: number
+          example: 5
+
+        guests:
+          type: number
+          example: 4
+
+        rentPrice:
+          type: number
+          example: 36294
+
+        amenities:
+          type: string[]
+          example: Washer;Towels;Fridge
+
+        commentNumber:
+          type: number
+          example: 36
+
+        latitude:
+          type: string
+          example: 51.225402
+
+        longitude:
+          type: string
+          example: 6.776314
+
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+    updateOffer:
+      type: object
+
+      properties:
+        title:
+          type: string
+          example: 1 bedroom house of 4500 m² in Dusseldorf
+
+        description:
+          type: string
+          example: A fashionable studio apartment with trendy decor, cool exposed-brick walls, a balcony, and smart home capabilities in Oosterpark 56, 1092 AP. The apartment is a 10 minutes from the University of Amsterdam ( 10 minutes by bike ), and nearby you'll find lots of restaurants, cafes, bars, and shops to enjoy.
+
+        date:
+          type: Date
+          example: 2022-09-09T21:28:03.335Z
+
+        city:
+          type: string
+          example: Dusseldorf
+
+        preview:
+          type: string
+          example: room.jpg
+
+        photos:
+          type: string
+          example: apartment-02.jpg;apartment-03.jpg
+
+        premium:
+          type: boolean
+          example: true
+
+        rating:
+          type: number
+          example: 3
+
+        rentType:
+          type: RentType
+          example: hotel
+
+        rooms:
+          type: number
+          example: 5
+
+        guests:
+          type: number
+          example: 4
+
+        rentPrice:
+          type: number
+          example: 36294
+
+        amenities:
+          type: string[]
+          example: Washer;Towels;Fridge
+
+        commentNumber:
+          type: number
+          example: 36
+
+        latitude:
+          type: string
+          example: 51.225402
+
+        longitude:
+          type: string
+          example: 6.776314
+
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        postId:
+          type: string
+          example: 54689046389dvg76j890ljgq3we
+
+    deleteOffer:
+      type: object
+
+      properties:
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+    listOffers:
+      type: object
+
+      properties:
+        title:
+          type: string
+          example: 1 bedroom house of 4500 m² in Dusseldorf
+
+        date:
+          type: Date
+          example: 2022-09-09T21:28:03.335Z
+
+        city:
+          type: string
+          example: Dusseldorf
+
+        preview:
+          type: string
+          example: room.jpg
+
+        premium:
+          type: boolean
+          example: true
+
+        rating:
+          type: number
+          example: 3
+
+        rentType:
+          type: RentType
+          example: hotel
+
+        rentPrice:
+          type: number
+          example: 36294
+
+        commentNumber:
+          type: number
+          example: 36
+
+    offer:
+      type: object
+
+      properties:
+        title:
+          type: string
+          example: 1 bedroom house of 4500 m² in Dusseldorf
+
+        description:
+          type: string
+          example: A fashionable studio apartment with trendy decor, cool exposed-brick walls, a balcony, and smart home capabilities in Oosterpark 56, 1092 AP. The apartment is a 10 minutes from the University of Amsterdam ( 10 minutes by bike ), and nearby you'll find lots of restaurants, cafes, bars, and shops to enjoy.
+
+        date:
+          type: Date
+          example: 2022-09-09T21:28:03.335Z
+
+        city:
+          type: string
+          example: Dusseldorf
+
+        preview:
+          type: string
+          example: room.jpg
+
+        photos:
+          type: string
+          example: apartment-02.jpg;apartment-03.jpg
+
+        premium:
+          type: boolean
+          example: true
+
+        rating:
+          type: number
+          example: 3
+
+        rentType:
+          type: RentType
+          example: hotel
+
+        rooms:
+          type: number
+          example: 5
+
+        guests:
+          type: number
+          example: 4
+
+        rentPrice:
+          type: number
+          example: 36294
+
+        amenities:
+          type: string[]
+          example: Washer;Towels;Fridge
+
+        commentNumber:
+          type: number
+          example: 36
+
+        latitude:
+          type: string
+          example: 51.225402
+
+        longitude:
+          type: string
+          example: 6.776314
+
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+    listComments:
+      type: object
+
+      properties:
+        comment:
+          type: string
+          example: Very cozy and comfortable. The landlord left me a plate of candies as a gift. Hope I can return there next year!
+
+        date:
+          type: Date
+          example: 2022-09-09T21:28:03.335Z
+
+        rating:
+          type: number
+          example: 5
+
+        user:
+          type: User
+          example: John Doe
+
+    createComment:
+      type: object
+
+      properties:
+        comment:
+          type: string
+          example: Very cozy and comfortable. The landlord left me a plate of candies as a gift. Hope I can return there next year!
+
+        date:
+          type: Date
+          example: 2022-09-09T21:28:03.335Z
+
+        rating:
+          type: number
+          example: 5
+
+        user:
+          $ref: "#/components/schemas/user"
