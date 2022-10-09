@@ -2,6 +2,7 @@ import { RentOffer } from '../types/rent-offer.type.js';
 import { RentType } from '../types/rent-type.enum.js';
 import { UserStatus } from '../types/user-status.enum.js';
 import crypto from 'crypto';
+import { ClassConstructor, plainToInstance } from 'class-transformer';
 
 export const createRentOffer = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
@@ -34,3 +35,10 @@ export const createSHA256 = (line: string, salt: string): string => {
   const shaHaser = crypto.createHmac('sha256', salt);
   return shaHaser.update(line).digest('hex');
 };
+
+export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
+  plainToInstance(someDto, plainObject, { excludeExtraneousValues: true });
+
+export const createErrorObject = (message: string) => ({
+  error: message
+});

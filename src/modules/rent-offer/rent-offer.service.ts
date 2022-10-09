@@ -62,8 +62,8 @@ export default class RentOfferService implements RentOfferServiceInterface {
   public async calculateRating(rentOfferId: string, newRating: number): Promise<DocumentType<RentOfferEntity> | null> {
     return this.rentOfferModel
       .findByIdAndUpdate(rentOfferId, {
-        '$inc': {rating: newRating},
-        '$mul': {rating: 0.5}
+        '$inc': { rating: newRating },
+        '$mul': { rating: 0.5 }
       }).exec();
   }
 
@@ -86,26 +86,18 @@ export default class RentOfferService implements RentOfferServiceInterface {
     return this.rentOfferModel
       .aggregate([
         {
-          $lookup: {
-            from: 'offers',
-            pipeline: [
-              {
-                $project: {
-                  _id: 1,
-                  rentPrice: 1,
-                  title: 1,
-                  rentType: 1,
-                  date: 1,
-                  city: 1,
-                  preview: 1,
-                  premium: 1,
-                  rating: 1,
-                  commentNumber: 1
-                }
-              }
-            ],
-            as: 'offers'
-          },
+          $project: {
+            _id: 1,
+            rentPrice: 1,
+            title: 1,
+            rentType: 1,
+            date: 1,
+            city: 1,
+            preview: 1,
+            premium: 1,
+            rating: 1,
+            commentNumber: 1,
+          }
         },
         { $limit: count },
         { $sort: { date: SortType.Down } }

@@ -18,6 +18,11 @@ import { RentOfferEntity, RentOfferModel } from './modules/rent-offer/rent-offer
 import { CommentServiceInterface } from './modules/comment/comment-service.interface.js';
 import { CommentEntity, CommentModel } from './modules/comment/comment.entity.js';
 import CommentService from './modules/comment/comment.service.js';
+import { ControllerInterface } from './common/controller/controller.interface.js';
+import RentOfferController from './modules/rent-offer/rent-offer.controller.js';
+import { ExceptionFilterInterface } from './common/errors/exception-filter.interface.js';
+import ExceptionFilter from './common/errors/exception-filter.js';
+import UserController from './modules/user/userController.js';
 
 const applicationContainer = new Container();
 applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
@@ -30,6 +35,9 @@ applicationContainer.bind<RentOfferServiceInterface>(Component.RentOfferServiceI
 applicationContainer.bind<types.ModelType<RentOfferEntity>>(Component.RentOfferModel).toConstantValue(RentOfferModel);
 applicationContainer.bind<CommentServiceInterface>(Component.CommentServiceInterface).to(CommentService).inSingletonScope();
 applicationContainer.bind<types.ModelType<CommentEntity>>(Component.CommentModel).toConstantValue(CommentModel);
+applicationContainer.bind<ControllerInterface>(Component.RentOfferController).to(RentOfferController).inSingletonScope();
+applicationContainer.bind<ExceptionFilterInterface>(Component.ExceptionFilterInterface).to(ExceptionFilter).inSingletonScope();
+applicationContainer.bind<ControllerInterface>(Component.UserController).to(UserController).inSingletonScope();
 
 const application = applicationContainer.get<Application>(Component.Application);
 
