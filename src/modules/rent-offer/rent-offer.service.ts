@@ -23,9 +23,9 @@ export default class RentOfferService implements RentOfferServiceInterface {
     return result;
   }
 
-  public async findById(rentOfferId: string): Promise<DocumentType<RentOfferEntity> | null> {
+  public async findById(offerId: string): Promise<DocumentType<RentOfferEntity> | null> {
     return this.rentOfferModel
-      .findById(rentOfferId)
+      .findById(offerId)
       .populate('userId')
       .exec();
   }
@@ -37,31 +37,31 @@ export default class RentOfferService implements RentOfferServiceInterface {
       .exec();
   }
 
-  public updateById(rentOfferId: string, dto: UpdateRentOfferDto): Promise<DocumentType<RentOfferEntity> | null> {
+  public updateById(offerId: string, dto: UpdateRentOfferDto): Promise<DocumentType<RentOfferEntity> | null> {
     return this.rentOfferModel
-      .findByIdAndUpdate(rentOfferId, dto, { new: true })
+      .findByIdAndUpdate(offerId, dto, { new: true })
       .populate('userId')
       .exec();
   }
 
-  public deleteById(rentOfferId: string): Promise<DocumentType<RentOfferEntity> | null> {
+  public deleteById(offerId: string): Promise<DocumentType<RentOfferEntity> | null> {
     return this.rentOfferModel
-      .findByIdAndDelete(rentOfferId)
+      .findByIdAndDelete(offerId)
       .exec();
   }
 
-  public async incCommentCount(rentOfferId: string): Promise<DocumentType<RentOfferEntity> | null> {
+  public async incCommentCount(offerId: string): Promise<DocumentType<RentOfferEntity> | null> {
     return this.rentOfferModel
-      .findByIdAndUpdate(rentOfferId, {
+      .findByIdAndUpdate(offerId, {
         '$inc': {
           commentNumber: 1,
         }
       }).exec();
   }
 
-  public async calculateRating(rentOfferId: string, newRating: number): Promise<DocumentType<RentOfferEntity> | null> {
+  public async calculateRating(offerId: string, newRating: number): Promise<DocumentType<RentOfferEntity> | null> {
     return this.rentOfferModel
-      .findByIdAndUpdate(rentOfferId, {
+      .findByIdAndUpdate(offerId, {
         '$inc': { rating: newRating },
         '$mul': { rating: 0.5 }
       }).exec();

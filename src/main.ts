@@ -23,6 +23,7 @@ import RentOfferController from './modules/rent-offer/rent-offer.controller.js';
 import { ExceptionFilterInterface } from './common/errors/exception-filter.interface.js';
 import ExceptionFilter from './common/errors/exception-filter.js';
 import UserController from './modules/user/userController.js';
+import CommentController from './modules/comment/comment.controller.js';
 
 const applicationContainer = new Container();
 applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
@@ -38,6 +39,7 @@ applicationContainer.bind<types.ModelType<CommentEntity>>(Component.CommentModel
 applicationContainer.bind<ControllerInterface>(Component.RentOfferController).to(RentOfferController).inSingletonScope();
 applicationContainer.bind<ExceptionFilterInterface>(Component.ExceptionFilterInterface).to(ExceptionFilter).inSingletonScope();
 applicationContainer.bind<ControllerInterface>(Component.UserController).to(UserController).inSingletonScope();
+applicationContainer.bind<ControllerInterface>(Component.CommentController).to(CommentController).inSingletonScope();
 
 const application = applicationContainer.get<Application>(Component.Application);
 
