@@ -11,4 +11,5 @@ export interface RentOfferServiceInterface {
   find(): Promise<DocumentType<RentOfferEntity>[]>;
   incCommentCount(offerId: string): Promise<DocumentType<RentOfferEntity> | null>;
   exists(documentId: string): Promise<boolean>;
+  getRentList(count?: number): Promise<DocumentType<RentOfferEntity>[]>
 }
