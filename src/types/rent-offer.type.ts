@@ -1,3 +1,4 @@
+import { CityType } from './city-type.enum.js';
 import { Location } from './location.type.js';
 import { RentType } from './rent-type.enum.js';
 import { User } from './user.type.js';
@@ -6,9 +7,9 @@ export type RentOffer = {
   title: string,
   description: string,
   date: Date,
-  city: string,
+  city: CityType,
   preview: string,
-  photos: string,
+  photos: string[],
   premium: boolean,
   rating: number,
   rentType: RentType,

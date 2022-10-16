@@ -4,6 +4,7 @@ import { inject } from 'inversify';
 import { Controller } from '../../common/controller/controller.js';
 import HttpError from '../../common/errors/http-error.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
+import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { Component } from '../../types/component.type.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
 import { fillDTO } from '../../utils/common.js';
@@ -22,15 +23,20 @@ export default class CommentController extends Controller {
     super(logger);
 
     this.logger.info('Register routes for UserController...');
-    this.addRoute({path: '/', method:HttpMethod.Post, handler: this.create});
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(CreateCommentDto)]
+    });
   }
 
   public async create(
-    { body}: Request<object, object, CreateCommentDto>,
+    { body }: Request<object, object, CreateCommentDto>,
     res: Response
   ): Promise<void> {
 
-    if(!await this.rentOfferService.exists(body.offerId)) {
+    if (!await this.rentOfferService.exists(body.offerId)) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `Offer with id ${body.offerId} not found.`,

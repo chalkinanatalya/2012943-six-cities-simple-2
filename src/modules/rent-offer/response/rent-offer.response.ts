@@ -1,4 +1,5 @@
 import { Expose, Type } from 'class-transformer';
+import { CityType } from '../../../types/city-type.enum.js';
 import { RentType } from '../../../types/rent-type.enum.js';
 import UserResponse from '../../user/response/user.response.js';
 
@@ -13,13 +14,13 @@ export default class RentOfferResponse {
   public date!: Date;
 
   @Expose()
-  public city!: string;
+  public city!: CityType;
 
   @Expose()
   public preview!: string;
 
   @Expose()
-  public photos!: string;
+  public photos!: string[];
 
   @Expose()
   public premium!: boolean;
