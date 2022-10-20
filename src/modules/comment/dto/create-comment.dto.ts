@@ -11,7 +11,6 @@ export default class CreateCommentDto {
   @IsMongoId({ message: 'offerId field must be a valid MongoId' })
   public offerId!: string;
 
-  @IsMongoId({ message: 'userId field must be a valid MongoId' })
   public userId!: string;
 
   @Min(1, { message: 'Minimum rating must be 1' })

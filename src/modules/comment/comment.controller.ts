@@ -4,6 +4,7 @@ import { inject } from 'inversify';
 import { Controller } from '../../common/controller/controller.js';
 import HttpError from '../../common/errors/http-error.js';
 import { LoggerInterface } from '../../common/logger/logger.interface.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { Component } from '../../types/component.type.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
@@ -27,14 +28,18 @@ export default class CommentController extends Controller {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateCommentDto)]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateCommentDto)
+      ]
     });
   }
 
   public async create(
-    { body }: Request<object, object, CreateCommentDto>,
+    req: Request<object, object, CreateCommentDto>,
     res: Response
   ): Promise<void> {
+    const { body } = req;
 
     if (!await this.rentOfferService.exists(body.offerId)) {
       throw new HttpError(
@@ -44,7 +49,7 @@ export default class CommentController extends Controller {
       );
     }
 
-    const comment = await this.commentService.create(body);
+    const comment = await this.commentService.create({ ...body, userId: req.user.id });
     await this.rentOfferService.incCommentCount(body.offerId);
     this.created(res, fillDTO(CommentResponse, comment));
   }

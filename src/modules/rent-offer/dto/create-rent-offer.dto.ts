@@ -1,4 +1,4 @@
-import { IsMongoId, IsDateString, MaxLength, MinLength, IsArray, IsBoolean, IsEnum, IsInt, IsLatitude, IsLongitude, IsUrl, Max, Min } from 'class-validator';
+import { IsDateString, MaxLength, MinLength, IsArray, IsBoolean, IsEnum, IsInt, IsLatitude, IsLongitude, IsUrl, Max, Min } from 'class-validator';
 import { CityType } from '../../../types/city-type.enum.js';
 import { RentType } from '../../../types/rent-type.enum.js';
 
@@ -58,6 +58,5 @@ export default class CreateRentOfferDto {
   @IsLongitude({ message: 'Data must be a longitude' })
   public longitude!: string;
 
-  @IsMongoId({ message: 'userId field must be valid an id' })
   public userId!: string;
 }

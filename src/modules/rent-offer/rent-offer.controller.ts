@@ -16,6 +16,7 @@ import { RequestQuery } from '../../types/request-query.type.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 
 type ParamsGetRentOffer = {
   offerId: string;
@@ -37,7 +38,10 @@ export default class RentOfferController extends Controller {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateRentOfferDto)]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateRentOfferDto)
+      ]
     });
 
     this.addRoute({
@@ -55,6 +59,7 @@ export default class RentOfferController extends Controller {
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.rentOfferService, 'RentOffer', 'offerId')
       ]
@@ -65,6 +70,7 @@ export default class RentOfferController extends Controller {
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(UpdateRentOfferDto),
         new DocumentExistsMiddleware(this.rentOfferService, 'RentOffer', 'offerId')
@@ -87,9 +93,10 @@ export default class RentOfferController extends Controller {
     this.ok(res, fillDTO(RentOfferResponse, offers));
   }
 
-  public async create({ body }: Request<Record<string, unknown>, Record<string, unknown>, CreateRentOfferDto>, res: Response): Promise<void> {
+  public async create(req: Request<Record<string, unknown>, Record<string, unknown>, CreateRentOfferDto>, res: Response): Promise<void> {
 
-    const result = await this.rentOfferService.create(body);
+    const { body, user } = req;
+    const result = await this.rentOfferService.create({ ...body, userId: user.id });
     const rentOffer = await this.rentOfferService.findById(result.id);
 
     this.created(

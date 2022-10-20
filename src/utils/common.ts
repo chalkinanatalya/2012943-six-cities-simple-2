@@ -4,6 +4,7 @@ import { UserStatus } from '../types/user-status.enum.js';
 import crypto from 'crypto';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { CityType } from '../types/city-type.enum.js';
+import * as jose from 'jose';
 
 export const createRentOffer = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
@@ -43,3 +44,10 @@ export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
 export const createErrorObject = (message: string) => ({
   error: message
 });
+
+export const createJWT = async (algorithm: string, jwtSecret: string, payload: object): Promise<string> =>
+  new jose.SignJWT({ ...payload })
+    .setProtectedHeader({ alg: algorithm })
+    .setIssuedAt()
+    .setExpirationTime('2d')
+    .sign(crypto.createSecretKey(jwtSecret, 'utf-8'));
