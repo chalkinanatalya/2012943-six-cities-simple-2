@@ -1,5 +1,6 @@
 import typegoose, { defaultClasses, getModelForClass, Ref } from '@typegoose/typegoose';
 import { AmenitiesList } from '../../types/amenities-list.enum.js';
+import { CityType } from '../../types/city-type.enum.js';
 import { RentType } from '../../types/rent-type.enum.js';
 import { UserEntity } from '../user/user.entity.js';
 
@@ -23,14 +24,17 @@ export class RentOfferEntity extends defaultClasses.TimeStamps {
   @prop()
   public date!: Date;
 
-  @prop({ required: true })
-  public city!: string;
+  @prop({
+    type: String,
+    enum: CityType
+  })
+  public city!: CityType;
 
   @prop()
   public preview!: string;
 
   @prop()
-  public photos!: string;
+  public photos!: string[];
 
   @prop()
   public premium!: boolean;

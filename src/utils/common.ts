@@ -3,18 +3,19 @@ import { RentType } from '../types/rent-type.enum.js';
 import { UserStatus } from '../types/user-status.enum.js';
 import crypto from 'crypto';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
+import { CityType } from '../types/city-type.enum.js';
 
 export const createRentOffer = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
 
-  const [title, description, createdDate, city, preview, photos, premium, rating, rentType, rooms, guests, rentPrice, amenities, name, email, avatar, status, commentNumber, latitude, longitude] = tokens;
+  const [title, description, createdDate, cityType, preview, photos, premium, rating, rentType, rooms, guests, rentPrice, amenities, name, email, avatar, status, commentNumber, latitude, longitude] = tokens;
   return {
     title,
     description,
     date: new Date(createdDate),
-    city,
+    city: CityType[cityType as 'Paris' | 'Cologne' | 'Brussels' | 'Amsterdam' | 'Hamburg' | 'Dusseldorf'],
     preview,
-    photos,
+    photos: photos.split(';'),
     premium: Boolean(premium),
     rating: Number.parseInt(rating, 10),
     rentType: RentType[rentType as 'apartment' | 'house' | 'room' | 'hotel'],
