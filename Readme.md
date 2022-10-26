@@ -47,3 +47,27 @@ git clone SSH-адрес_вашего_форка
 <a href="https://htmlacademy.ru/profession/fullstack"><img align="left" width="50" height="50" title="HTML Academy" src="https://up.htmlacademy.ru/static/img/intensive/nodejs/logo-for-github-2.png"></a>
 
 Репозиторий создан для обучения на профессиональном онлайн‑курсе «[Node.js. Профессиональная разработка REST API](https://htmlacademy.ru/profession/fullstack)» от [HTML Academy](https://htmlacademy.ru).
+
+### 5. Запуск проекта
+
+Команда запускает проект. Не забудьте перед этим поднять контейнеры в Docker:
+
+```
+npm run start:dev
+```
+
+Docker в фоновом режиме: docker-compose up -d
+
+### 6. Список всех переменных окружения
+
+DB_USER=admin - имя
+DB_PASSWORD=test - пароль
+DB_HOST=172.18.144.1 - номер хоста
+DB_NAME=nchalk-nodejs-restapi - имя базы данных
+SALT=123qwerty123 - соль для пароля
+UPLOAD_DIRECTORY=./upload - папка для загрузки
+JWT_SECRET=totalsecret - для проверки подписи в токене
+STATIC_DIRECTORY_PATH=static - для статики
+
+
+

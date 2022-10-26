@@ -17,6 +17,9 @@ import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-ob
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
 import { DocumentExistsMiddleware } from '../../common/middlewares/document-exists.middleware.js';
 import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
+import { ConfigInterface } from '../../common/config/config.interface.js';
+import { UploadFileMiddleware } from '../../common/middlewares/upload-file.middleware.js';
+import UploadPhotosResponse from './response/upload-prewiew.response.js';
 
 type ParamsGetRentOffer = {
   offerId: string;
@@ -26,10 +29,11 @@ type ParamsGetRentOffer = {
 export default class RentOfferController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
+    @inject(Component.ConfigInterface) configService: ConfigInterface,
     @inject(Component.RentOfferServiceInterface) private readonly rentOfferService: RentOfferServiceInterface,
     @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface
   ) {
-    super(logger);
+    super(logger, configService);
 
     this.logger.info('Register routes for RentOfferController...');
 
@@ -86,6 +90,17 @@ export default class RentOfferController extends Controller {
         new DocumentExistsMiddleware(this.rentOfferService, 'RentOffer', 'offerId')
       ],
     });
+
+    this.addRoute({
+      path: '/:offerId/preview',
+      method: HttpMethod.Post,
+      handler: this.uploadImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'preview'),
+      ]
+    });
   }
 
   public async index(_req: Request, res: Response) {
@@ -138,6 +153,13 @@ export default class RentOfferController extends Controller {
   ): Promise<void> {
     const comments = await this.commentService.findByOfferId(params.offerId, query.limit);
     this.ok(res, fillDTO(CommentResponse, comments));
+  }
+
+  public async uploadImage(req: Request<core.ParamsDictionary | ParamsGetRentOffer>, res: Response) {
+    const { offerId } = req.params;
+    const updateDto = { preview: req.file?.filename };
+    await this.rentOfferService.updateById(offerId, updateDto);
+    this.created(res, fillDTO(UploadPhotosResponse, { updateDto }));
   }
 }
 

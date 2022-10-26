@@ -16,7 +16,29 @@ tags:
     description: Действия с пользователем.
 
 paths:
-  /offers/register:
+  /offers:
+    get:
+      tags:
+        - offers
+      summary: Получить список предложений по аренде.
+      description: Получение списка предложений по аренде.
+      parametres:
+        - name: listOffers
+          description: Информация для получения списка предложений
+          schema:
+            type: number
+            default: 60
+
+      responses:
+        "200":
+          description: Список получен. Массив объектов предложения.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/listOffers"
+
     post:
       tags:
         - offers
@@ -42,7 +64,44 @@ paths:
         "409":
           description: Ошибка данных регистрации.
 
-  /offers/update:
+  /offers/{offerId}:
+    delete:
+      tags:
+        - offers
+      summary: Удалить предложение
+      description: Удаление существующего предложения.
+
+      requestBody:
+        description: Информация для удаления предложения.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/deleteOffer"
+        required: true
+
+      responses:
+        "204":
+          description: Предложение удалено. Объект предложения.
+
+        "403":
+          description: Запрет удаления.
+    get:
+          tags:
+            - offers
+          summary: Получить одно предложение по аренде.
+          description: Получение одного предложения по аренде.
+          parametres:
+            - name: offer
+              description: Информация для получения одного предложения
+
+          responses:
+            "200":
+              description: Одно предложение получено. Объект предложения.
+              content:
+                application/json:
+                  schema:
+                    items:
+                      $ref: "#/components/schemas/offer"
     put:
       tags:
         - offers
@@ -69,70 +128,6 @@ paths:
           description: Ошибка данных обновления.
         "403":
           description: Запрет обновления.
-
-  /offers/{offerId}/delete:
-    delete:
-      tags:
-        - offers
-      summary: Удалить предложение
-      description: Удаление существующего предложения.
-
-      requestBody:
-        description: Информация для удаления предложения.
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/deleteOffer"
-        required: true
-
-      responses:
-        "204":
-          description: Предложение удалено. Объект предложения.
-
-        "403":
-          description: Запрет удаления.
-
-  /offers/list:
-    get:
-      tags:
-        - offers
-      summary: Получить список предложений по аренде.
-      description: Получение списка предложений по аренде.
-      parametres:
-        - name: listOffers
-          description: Информация для получения списка предложений
-          schema:
-            type: number
-            default: 60
-
-      responses:
-        "200":
-          description: Список получен. Массив объектов предложения.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/listOffers"
-
-  /offers/{offerId}:
-    get:
-      tags:
-        - offers
-      summary: Получить одно предложение по аренде.
-      description: Получение одного предложения по аренде.
-      parametres:
-        - name: offer
-          description: Информация для получения одного предложения
-
-      responses:
-        "200":
-          description: Одно предложение получено. Объект предложения.
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/offer"
 
   /comments/{offerId}:
     get:

@@ -30,7 +30,7 @@ export class RentOfferEntity extends defaultClasses.TimeStamps {
   })
   public city!: CityType;
 
-  @prop()
+  @prop({ default: '' })
   public preview!: string;
 
   @prop()

@@ -8,7 +8,9 @@ import { ExceptionFilterInterface } from '../common/errors/exception-filter.inte
 import { LoggerInterface } from '../common/logger/logger.interface.js';
 import { AuthenticateMiddleware } from '../common/middlewares/authenticate.middleware.js';
 import { Component } from '../types/component.type.js';
+import { getFullServerPath } from '../utils/common.js';
 import { getURI } from '../utils/db.js';
+import cors from 'cors';
 
 
 @injectable()
@@ -39,9 +41,14 @@ export default class Application {
       './upload',
       express.static(this.config.get('UPLOAD_DIRECTORY'))
     );
+    this.expressApp.use(
+      '/static',
+      express.static(this.config.get('STATIC_DIRECTORY_PATH'))
+    );
 
     const authenticateMiddleware = new AuthenticateMiddleware(this.config.get('JWT_SECRET'));
     this.expressApp.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
+    this.expressApp.use(cors());
   }
 
   public initExceptionFilters() {
@@ -67,6 +74,6 @@ export default class Application {
     this.initRoutes();
     this.initExceptionFilters();
     this.expressApp.listen(this.config.get('PORT'));
-    this.logger.info(`Server has started on http://localhost:${this.config.get('PORT')}`);
+    this.logger.info(`Server started on ${getFullServerPath(this.config.get('HOST'), this.config.get('PORT'))}`);
   }
 }
