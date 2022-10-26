@@ -22,7 +22,7 @@ import { ControllerInterface } from './common/controller/controller.interface.js
 import RentOfferController from './modules/rent-offer/rent-offer.controller.js';
 import { ExceptionFilterInterface } from './common/errors/exception-filter.interface.js';
 import ExceptionFilter from './common/errors/exception-filter.js';
-import UserController from './modules/user/userController.js';
+import UserController from './modules/user/user.controller.js';
 import CommentController from './modules/comment/comment.controller.js';
 
 const applicationContainer = new Container();

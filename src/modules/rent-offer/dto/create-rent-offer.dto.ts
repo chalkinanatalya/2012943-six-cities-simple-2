@@ -17,8 +17,8 @@ export default class CreateRentOfferDto {
   @IsEnum(CityType, { message: 'Type must be paris | cologne | brussels | amsterdam | hamburg | dusseldorf' })
   public city!: CityType;
 
-  @IsUrl({ message: 'Preview url should be valid' })
-  public preview!: string;
+  // @IsUrl({ message: 'Preview url should be valid' })
+  // public preview!: string;
 
   @IsUrl({ message: 'Photos url should be valid' }, { each: true })
   @IsArray({ message: 'Photos must be an array' })
