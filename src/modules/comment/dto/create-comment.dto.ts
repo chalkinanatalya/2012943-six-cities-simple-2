@@ -5,7 +5,7 @@ export default class CreateCommentDto {
   @Length(5, 1024, { message: 'Min comment length is 5 characters, max length is 1024 characters' })
   public text!: string;
 
-  @IsDateString({}, { message: 'Date should be valid ISO date' })
+  @IsDateString({}, { message: 'Date must be valid ISO date' })
   public date!: Date;
 
   @IsMongoId({ message: 'offerId field must be a valid MongoId' })
